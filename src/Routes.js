@@ -55,6 +55,9 @@ const AuthStack = createStackNavigator(
       // headerBackTitle: 'Back',
       headerStyle: {
         backgroundColor: 'steelblue',
+        shadowColor: 'transparent',
+        elevation: 0,
+        borderBottomWidth: 0,
       },
       headerTintColor: '#fff',
       // headerTitleStyle: {

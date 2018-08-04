@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    backgroundColor: 'skyblue',
+    backgroundColor: 'steelblue',
     borderRadius: 15,
     margin: 5,
   },

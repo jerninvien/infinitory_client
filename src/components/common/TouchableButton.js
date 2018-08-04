@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    backgroundColor: "skyblue",
+    backgroundColor: "steelblue",
     borderRadius: 15,
     marginTop: 5,
     marginLeft: 50,

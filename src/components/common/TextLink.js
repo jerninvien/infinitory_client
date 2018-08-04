@@ -30,7 +30,7 @@ const TextLink = ({
 const styles = StyleSheet.create({
   text: {
     alignSelf: 'center',
-    color: 'skyblue',
+    color: 'steelblue',
     fontSize: 18,
     fontWeight: '700',
     paddingBottom: 10,

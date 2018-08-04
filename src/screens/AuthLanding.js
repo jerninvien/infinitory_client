@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   registerText: {
-    color: 'skyblue',
+    color: 'steelblue',
     fontSize: 18,
     fontWeight: '700',
   },
