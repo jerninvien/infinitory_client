@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
-  StatusBar,
+  // StatusBar,
   StyleSheet,
   View,
   Text,
@@ -36,7 +36,7 @@ export class LoadingScreen extends Component {
             marginTop: 30
           }}
         >
-          BOOKEDZZZ
+          INFINITORY
         </Text>
         <ActivityIndicator />
 

@@ -13,9 +13,6 @@ import {
   RegistrationComplete,
 } from 'app/src/screens';
 
-// Implementation of HomeScreen, OtherScreen, SignInScreen, AuthLoadingScreen
-// goes here.
-
 const AppStack = createDrawerNavigator({
   Home: LoggedIn,
   Home2: LoggedIn2,

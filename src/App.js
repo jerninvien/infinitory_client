@@ -11,10 +11,7 @@
 import React, { Component, Fragment } from 'react';
 import {
   AppState,
-  // AsyncStorage,
   Button,
-  // NativeModules,
-  // Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -27,21 +24,9 @@ import { getUsers } from 'app/src/reduxModules/usersReducer';
 import { LoggedIn, Registration } from 'app/src/screens/';
 
 import { Loading, UserList } from 'app/src/components/common/';
-
-// import { Registration } from 'app/src/components';
-import AppRoutes from 'app/src/Routes';
+import Routes from 'app/src/Routes';
 
 import { deviceStorage } from 'app/src/services/';
-
-// import Base from 'app/src/index';
-// import IntroScreen from 'app/src/components/introscreen.js';
-
-// if (__DEV__ && Platform.OS === 'ios') {
-//   console.log('In __DEV__ mode');
-//   NativeModules.DevSettings.setHotLoadingEnabled(true);
-//   NativeModules.DevSettings.setIsDebuggingRemotely(true);
-//   NativeModules.DevSettings.setLiveReloadEnabled(true);
-// }
 
 export class App extends Component {
   state = {
@@ -144,7 +129,7 @@ export class App extends Component {
              backgroundcolor='steelblue'
              barStyle='light-content'
           />
-          <AppRoutes />
+          <Routes />
         </View>
     );
   }

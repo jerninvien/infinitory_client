@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Entypo';
 import { TextLink } from 'app/src/components/common';
 
 export class AuthLanding extends Component {
@@ -42,7 +42,7 @@ export class AuthLanding extends Component {
           backgroundColor: 'steelblue',
         }}>
           <Icon
-            name='book'
+            name='infinity'
             size={120}
             color='white'
           />
@@ -92,7 +92,7 @@ export class AuthLanding extends Component {
             onPress={this._goToHere('SignIn')}
             icon={
               <Icon
-                name='envelope'
+                name='mail'
                 size={20}
                 color='rgba(99, 99, 99, 1)'
               />
