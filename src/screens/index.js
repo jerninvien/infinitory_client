@@ -1,4 +1,4 @@
-export { AuthLanding } from './AuthLanding';
+export AuthLanding from './AuthLanding';
 export { LoadingScreen } from './LoadingScreen';
 export { LoggedIn } from './LoggedIn';
 export { LoggedIn2 } from './LoggedIn2';

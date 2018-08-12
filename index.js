@@ -31,5 +31,5 @@ const AppRedux = () => (
   </Provider>
 );
 
-console.ignoredYellowBox = ['Remote debugger'];
+// console.ignoredYellowBox = ['Remote debugger'];
 AppRegistry.registerComponent(appName, () => AppRedux);

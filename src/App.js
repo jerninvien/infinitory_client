@@ -20,15 +20,15 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { getUsers } from 'app/src/reduxModules/usersReducer';
-import { LoggedIn, Registration } from 'app/src/screens/';
+import { getUsers } from 'app/src/reduxModules/users';
 
+import { LoggedIn, Registration } from 'app/src/screens/';
 import { Loading, UserList } from 'app/src/components/common/';
 import Routes from 'app/src/Routes';
 
 import { deviceStorage } from 'app/src/services/';
 
-export class App extends Component {
+class App extends Component {
   state = {
     // showRegisterScreen: true,
     appState: AppState.currentState,
@@ -45,7 +45,9 @@ export class App extends Component {
     console.log('App.js CMD');
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    this.props.getUsers();
+    console.log('here props', this.props);
+
+    this.props.getUsers().then(r => console.log('r iz', r));
 
     // deviceStorage.loadItem('api_key')
     //   .then(res => {
@@ -101,27 +103,6 @@ export class App extends Component {
     this.setState({appState: nextAppState});
   }
 
-  _setupLogin = response => {
-    console.log('this is 1', response);
-
-    const { currentUser } = response.data;
-
-    deviceStorage.saveItem('api_key', currentUser.api_key)
-      .then(res => {
-        console.log('res iz???', res);
-      }).catch(err => {
-        console.log("deviceStorage.saveItem('api_key', current_user.api_key) ERROR", err);
-      });
-
-
-    this.setState({
-      loading: false,
-      message: '',
-      // showRegisterScreen: false,
-      ...response.data,
-    });
-  }
-
   render() {
     return (
         <View style={styles.container}>
@@ -146,18 +127,14 @@ const styles = StyleSheet.create({
   },
 });
 
-mapStateToProps = store => {
-  return {
+mapStateToProps = store => ({
     users: store.users.users,
     loading: store.users.loading,
     error: store.users.error,
-  };
-}
+  });
 
-mapDispatchToProps = dispatch => {
-  return {
-    getUsers: () => dispatch(getUsers())
-  };
+mapDispatchToProps = {
+  getUsers
 }
 
 export default connect(

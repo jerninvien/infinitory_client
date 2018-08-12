@@ -1,51 +1,54 @@
 import {
-  createDrawerNavigator,
+  createBottomTabNavigator,
   createStackNavigator,
   createSwitchNavigator,
 } from 'react-navigation';
+
 import {
   LoadingScreen,
   AuthLanding,
-  Login,
+  // Login,
   LoggedIn,
   LoggedIn2,
-  Registration,
-  RegistrationComplete,
+  // Registration,
+  // RegistrationComplete,
 } from 'app/src/screens';
 
-const AppStack = createDrawerNavigator({
+console.log('AuthLanding', AuthLanding);
+
+const AppStack = createBottomTabNavigator({
   Home: LoggedIn,
   Home2: LoggedIn2,
 });
 
-const RegistrationStack = createSwitchNavigator(
-  {
-    Registration: {
-      screen: Registration
-    },
-    RegistrationComplete: {
-      screen: RegistrationComplete
-    }
-  }
-);
+// const RegistrationStack = createSwitchNavigator(
+//   {
+//     Registration: {
+//       screen: Registration
+//     },
+//     RegistrationComplete: {
+//       screen: RegistrationComplete
+//     }
+//   }
+// );
 
 const AuthStack = createStackNavigator(
   {
     AuthLanding: {
       screen: AuthLanding,
     },
-    SignIn: {
-      screen: Login,
-      navigationOptions: {
-        title: 'Login'
-      },
-    },
-    Registration: {
-      screen: RegistrationStack,
-      navigationOptions: {
-        title: 'Register'
-      }
-    }
+    // SignIn: {
+    //   screen: Login,
+    //   navigationOptions: {
+    //     title: 'Login'
+    //   },
+    // },
+    // Registration: {
+    //   screen: RegistrationStack,
+    //   navigationOptions: {
+    //     title: 'Register'
+    //   }
+    // }
   },
   {
     navigationOptions: {

@@ -17,7 +17,7 @@ export class LoadingScreen extends Component {
 
   // Fetch the token from AsyncStorage then navigate accordingly
   _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
+    const userToken = await AsyncStorage.getItem('api_key');
 
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
@@ -39,7 +39,6 @@ export class LoadingScreen extends Component {
           INFINITORY
         </Text>
         <ActivityIndicator />
-
       </View>
     );
   }
