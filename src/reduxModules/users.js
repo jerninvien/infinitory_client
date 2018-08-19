@@ -1,5 +1,7 @@
 const SET_API_KEY = 'SET_API_KEY';
 
+const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
 const GET_USERS_PENDING = 'GET_USERS_PENDING';
 const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 const GET_USERS_FAILURE = 'GET_USERS_FAILURE';
@@ -28,6 +30,12 @@ export default function users (state = initialState, action) {
     //     apiKey: action.key
     //   }
 
+    case SET_CURRENT_USER:
+      console.log('SET_CURRENT_USER', action);
+      return {
+        ...state,
+        currentUser: action.currentUser
+      }
 
     case GET_USERS_PENDING:
       console.log('GET_USERS_PENDING', action);
@@ -93,19 +101,26 @@ export default function users (state = initialState, action) {
 //   }
 // }
 
-// Thunk function:
-export const getUsers = () => dispatch => {
-  dispatch({ type: GET_USERS_PENDING });
-  return fetchUsers()
-    .then(data => dispatch({ type: GET_USERS_SUCCESS, data }))
-    .catch(error => dispatch({ type: GET_USERS_FAILURE, error }));
+export const setCurrentUserInStore = currentUser => {
+  console.log('setCurrentUserInStore', currentUser);
+  return { type: SET_CURRENT_USER, currentUser }
 }
 
-export const joinCreateLab = ({endpoint, invite_code, name}) =>  dispatch => {
-  dispatch({ type: JOIN_CREATE_LAB_PENDING });
-  return joinOrCreateLab({endpoint, invite_code, name})
-    .then(data => dispatch({ type: JOIN_CREATE_LAB_SUCCESS, data }))
-    .catch(error => dispatch({ type: JOIN_CREATE_LAB_FAILURE, error }));
+// Thunk function:
+export const getUsers = () =>
+  dispatch => {
+    dispatch({ type: GET_USERS_PENDING });
+    return fetchUsers()
+      .then(data => dispatch({ type: GET_USERS_SUCCESS, data }))
+      .catch(error => dispatch({ type: GET_USERS_FAILURE, error }));
+}
+
+export const joinCreateLab = ({endpoint, invite_code, name}) =>
+  dispatch => {
+    dispatch({ type: JOIN_CREATE_LAB_PENDING });
+    return joinOrCreateLab({endpoint, invite_code, name})
+      .then(data => dispatch({ type: JOIN_CREATE_LAB_SUCCESS, data }))
+      .catch(error => dispatch({ type: JOIN_CREATE_LAB_FAILURE, error }));
 }
 
 // const getUsersSuccess = data => {

@@ -10,6 +10,7 @@ import {
 
 import { connect } from 'react-redux';
 import { joinCreateLab } from 'app/src/reduxModules/users';
+import { setAxiosTokenHeader } from 'app/src/services/api';
 
 import Icon from 'react-native-vector-icons/Entypo';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -53,24 +54,23 @@ class AuthLanding extends Component {
 
     // NOTE Post to HTTPS in production
     this.props.joinCreateLab({endpoint, invite_code, name})
-      .then(res => {
-        // Handle the Invite response here
-        console.log('response is', res);
-        this._setupLogin();
-      }).catch(err => {
-         // Handle Invite errors here
-         console.log('error is 1', err);
+      .then(() => this._setupLogin())
+      .catch(err => {
+         console.log('joinCreateLab error:', err);
          return err;
       });
   }
 
   _setupLogin = () => {
     const { currentUser } = this.props;
-    console.log('currentUser iz', currentUser);
+    // console.log('_setupLogin res iz', res);
+    console.log('_setupLogin currentUser iz A', currentUser);
+    console.log('_setupLogin currentUser iz B', JSON.stringify(currentUser));
 
-    AsyncStorage.multiSet(['ID', 'apiKey'], [currentUser.id, currentUser.api_key])
-      .then(res => {
-        console.log('res iz???', res);
+    AsyncStorage.setItem('currentUser', JSON.stringify(currentUser))
+      .then(() => {
+        console.log('setItem worked??', currentUser);
+        setAxiosTokenHeader(currentUser.api_key);
         this.props.navigation.navigate('App');
       }).catch(err => {
         console.log("deviceStorage.saveItem('apiKey', currentUser.apiKey) ERROR", err);

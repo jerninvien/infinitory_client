@@ -19,16 +19,17 @@ class LoadingScreen extends Component {
   }
 
   _bootstrapAsync = async () => {
-    const apiKey = await AsyncStorage.getItem('apiKey');
+    const currentUser = await AsyncStorage.getItem('currentUser');
 
-    setTimeout(() => {
-      if (apiKey) {
-        setAxiosTokenHeader(apiKey);
-        this.props.navigation.navigate('App');
-      } else {
-        this.props.navigation.navigate('Auth');
-      }
-    }, 2000);
+    if (currentUser && (Object.keys(currentUser).length !== 0)) {
+      console.log('do this?', currentUser);
+      setAxiosTokenHeader(JSON.parse(currentUser).api_key);
+      setTimeout(() => {this.props.navigation.navigate('App')}, 2000);
+    } else {
+      console.log('_bootstrapAsync missing currentUser');
+      await AsyncStorage.clear();
+      this.props.navigation.navigate('Auth');
+    }
   };
 
   render() {

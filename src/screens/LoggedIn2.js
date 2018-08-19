@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   // Fragment,
   StyleSheet,
   Text,
@@ -13,27 +14,28 @@ export class LoggedIn2 extends Component {
     drawerLabel: 'Home2',
   }
 
-  state = {
-    viewMode: 'Members'
-  }
+  componentDidMount = () => console.log('LoggedIn.js CMD')
 
-  componentDidMount = () => {
-    console.log('LoggedIn.js CMD');
+  _logOut = () => {
+    console.log('_logOut');
+    AsyncStorage.clear()
+      .then(() => this.props.navigation.navigate('Auth'));
+
+    console.log('down here now');
   }
 
   render() {
     // const { currentUser } = this.props;
-    const { viewMode } = this.state;
     // console.log('currentUser is', currentUser);
 
     return (
       <View style={styles.container}>
         <View>
           <Text
-            onPress={() => this.props.navigation.toggleDrawer()}
+            onPress={this._logOut}
             style={styles.userText}
           >
-            LoggedIn2
+            Logout
           </Text>
         </View>
       </View>
