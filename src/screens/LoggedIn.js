@@ -18,7 +18,7 @@ export class LoggedIn extends Component {
   }
 
   componentDidMount = () => {
-    console.log('LoggedIn.js CMD');
+    console.log('LoggedIn.js CMD', this.props);
   }
 
   render() {
@@ -30,7 +30,7 @@ export class LoggedIn extends Component {
       <View style={styles.container}>
         <View>
         <Text
-          onPress={() => this.props.navigation.toggleDrawer()}
+          onPress={() => console.log('this was presesz')}
           style={styles.userText}
         >
             LoggedIn

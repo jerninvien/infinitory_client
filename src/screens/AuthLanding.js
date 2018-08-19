@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   Dimensions,
   StyleSheet,
   Text,
@@ -22,19 +23,10 @@ import {
   TouchableButton,
 } from 'app/src/components/common';
 
-import axios from 'axios';
-
-
 class AuthLanding extends Component {
-  // static navigationOptions = {
-  //   title: 'Homez',
-  // };
-
   state = {
-    error: '',
-    loading: false,
-    pin_code: '',
-    username: '',
+    invite_code: '',
+    name: '',
   }
 
   componentDidMount = () => {
@@ -46,27 +38,22 @@ class AuthLanding extends Component {
   // }
 
   _sendJoinOrCreateRequest = () => {
-    const { pin_code, username } = this.state;
+    const { invite_code, name } = this.state;
 
-    if (username.length == 0) {
+    if (name.length == 0) {
       this.setState({ error: 'Enter a Username please' });
       return;
     }
 
-    if (pin_code.length > 0 && pin_code.length !== 5) {
+    if (invite_code.length > 0 && invite_code.length !== 4) {
       this.setState({ error: 'Pin code must be 5 digits' });
       return;
     }
 
-    this.setState({
-      error: '',
-      loading: true,
-    });
-
-    const endpoint = pin_code.length > 0 ? 'users' : 'lab';
+    const endpoint = invite_code.length > 0 ? 'users' : 'lab';
 
     // NOTE Post to HTTPS in production
-    this.props.joinCreateLab({endpoint, pin_code, username})
+    this.props.joinCreateLab({endpoint, invite_code, name})
       .then(res => {
         // Handle the Invite response here
         console.log('response is', res);
@@ -74,83 +61,42 @@ class AuthLanding extends Component {
       }).catch(err => {
          // Handle Invite errors here
          console.log('error is 1', err);
-
-         this.setState({
-           error: err.message || 'Invalid Pin Code',
-           loading: false,
-         });
          return err;
       });
-    // axios({
-    //   method: 'POST',
-    //   url: `http://0.0.0.0:3000/api/v1/${endpoint}`,
-    //   data: {
-    //     [endpoint]: {
-    //       pin_code,
-    //       name: username,
-    //     }
-    //   }
-    //   }).then(res => {
-    //     // Handle the Invite response here
-    //     console.log('response is', res);
-    //     this.setupLogin(res);
-    //   }).catch(err => {
-    //      // Handle Invite errors here
-    //      console.log('error is 1', err);
-    //
-    //      this.setState({
-    //        error: err.message || 'Invalid Pin Code',
-    //        loading: false,
-    //      });
-    //      return err;
-    //   });
   }
 
-  _setupLogin = response => {
-    console.log('this is 1', response);
-    const { currentUser } = response.data;
+  _setupLogin = () => {
+    const { currentUser } = this.props;
+    console.log('currentUser iz', currentUser);
 
-    const { current_user } = this.props;
-
-    console.log('current_user iz', current_user);
-
-    deviceStorage.saveItem('api_key', currentUser.api_key)
+    AsyncStorage.setItem('api_key', currentUser.api_key)
       .then(res => {
         console.log('res iz???', res);
+        this.props.navigation.navigate('App');
       }).catch(err => {
-        console.log("deviceStorage.saveItem('api_key', current_user.api_key) ERROR", err);
+
+      // this.setState({
+      //   loading: false,
+      //   message: '',
+      // });
+        console.log("deviceStorage.saveItem('api_key', currentUser.api_key) ERROR", err);
       });
-
-
-    this.setState({
-      loading: false,
-      message: '',
-      // showRegisterScreen: false,
-      ...response.data,
-    });
   }
 
   render() {
+    const { invite_code, name } = this.state;
+    const { error, loading } = this.props;
     const { width } = Dimensions.get('window');
 
-    const {
-      error,
-      loading,
-      pin_code,
-      username,
-    } = this.state;
-
-    const submitText = pin_code.length > 0 ?
+    const submitText = invite_code.length > 0 ?
       'Join an existing lab' :
       'Create a new lab';
 
-    console.log('Registration Render state:', this.state);
-
+    // console.log('Registration Render state:', this.state);
     // const zests = error ? 'ENTER A USERNAME' : ''
 
     return (
       <View style={styles.container}>
-
         <View style={{
           flex: 1,
           justifyContent: 'space-around',
@@ -181,11 +127,8 @@ class AuthLanding extends Component {
 
 
         <View style={styles.form}>
-
           <Input
-            containerStyle={{
-              justifyContent: 'space-around'
-            }}
+            containerStyle={{justifyContent: 'space-around'}}
             leftIcon={
               <Icon
                 name='user'
@@ -195,17 +138,12 @@ class AuthLanding extends Component {
             }
             placeholder='Username'
             errorStyle={{ color: 'red' }}
-            value={username}
-            onChangeText={username => this.setState({
-              username,
-              error: '',
-            })}
+            value={name}
+            onChangeText={name => this.setState({ name, error: '' })}
           />
 
           <Input
-            containerStyle={{
-              justifyContent: 'space-around'
-            }}
+            containerStyle={{justifyContent: 'space-around'}}
             leftIcon={
               <Icon
                 name='lock'
@@ -216,21 +154,16 @@ class AuthLanding extends Component {
             keyboardType={'numeric'}
             placeholder='Security code (optional)'
             errorStyle={{ color: 'red' }}
-            value={pin_code}
-            maxLength={5}
-            onChangeText={pin_code => this.setState({
-              pin_code,
-              error: '',
-            })}
+            value={invite_code}
+            maxLength={4}
+            onChangeText={invite_code => this.setState({ invite_code, error: '' })}
           />
 
-          <Text style={{
-            ...styles.errorTextStyle
-          }}>{error}</Text>
+          <Text style={{...styles.errorTextStyle}}>{error}</Text>
 
           {!loading ?
             <TouchableButton
-              disabled={error !== ''}
+              disabled={(error !== '') && (invite_code.length !== 4)}
               onPress={this._sendJoinOrCreateRequest}
               title={submitText}
             >
@@ -248,7 +181,7 @@ class AuthLanding extends Component {
 mapStateToProps = store => ({
   loading: store.users.loading,
   error: store.users.error,
-  current_user: store.users.current_user
+  currentUser: store.users.currentUser
 });
 
 mapDispatchToProps = {

@@ -1,51 +1,51 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
-export const fetchUsers = () => {
-  return axios({
-    method: 'GET',
-    url: 'https://randomuser.me/api/?results=5&nat=us,dk,fr,gb'
-  });
-  // .then(res => res).catch(error => error);
-}
+// configure base url
+const api = axios.create({
+  baseURL: 'http://0.0.0.0:3000/api/v1/',
+});
 
-export const joinOrCreateLab = ({endpoint, pin_code, username}) => {
-  console.log('joinOrCreateLab', endpoint, pin_code, username);
-  return axios({
-    method: 'POST',
-    url: `http://0.0.0.0:3000/api/v1/${endpoint}`,
-    data: {
-      [endpoint]: {
-        pin_code,
-        name: username,
-      }
+// intercept requests and add authorization token
+api.interceptors.request.use(config => {
+  // const token = store.getState().auth.token;
+  console.log('helo up here');
+
+  AsyncStorage.getItem('api_key').then(token => {
+    if (token) {
+      console.log('token found!');
+      config.headers.authorization = `Bearer ${token}`;
+    } else {
+      console.log('token not found!');
     }
   });
-  // .then(res => {
-  //   // Handle the Invite response here
-  //   console.log('response is', res);
-  //   return res;
-  // }).catch(err => {
-  //    // Handle Invite errors here
-  //    console.log('error is 1', err);
-  //
-  //    // this.setState({
-  //    //   error: err.message || 'Invalid Pin Code',
-  //    //   loading: false,
-  //    // });
-  //    return err;
+
+  console.log('configing axios api', config);
+  return config;
+})
+
+
+export const fetchUsers = () => {
+  console.log('fetchUserszzz');
+  // return axios({
+  //   method: 'GET',
+  //   url: 'https://randomuser.me/api/?results=5&nat=us,dk,fr,gb'
   // });
+
+  return api({
+    method: 'GET',
+    url: 'users',
+  })
 }
 
-// export const fetchUsersLocal = () => {
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       return resolve(people);
-//     }, 3000);
-//   })
-// }
-//
-// const people = [
-//   { name: 'Nader', age: 36 },
-//   { name: 'Amanda', age: 24 },
-//   { name: 'Jason', age: 44 }
-// ]
+
+export const joinOrCreateLab = ({endpoint, invite_code, name}) => {
+  console.log('joinOrCreateLab', endpoint, invite_code, name);
+  return api({
+    method: 'POST',
+    url: endpoint,
+    data: {
+      [endpoint]: { invite_code, name }
+    }
+  });
+}

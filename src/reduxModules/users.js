@@ -12,7 +12,7 @@ const initialState = {
   error: false,
   loading: false,
   users: [],
-  current_user: {}
+  currentUser: {}
 }
 
 export default function users (state = initialState, action) {
@@ -45,26 +45,25 @@ export default function users (state = initialState, action) {
       console.log('JOIN_CREATE_LAB_PENDING', action);
       return {
         ...state,
-        current_user: {},
+        currentUser: {},
         loading: true,
         error: null,
       }
     case JOIN_CREATE_LAB_SUCCESS:
       console.log('JOIN_CREATE_LAB_SUCCESS', action);
-      const current_user = action.data.data.results;
+      const { currentUser } = action.data.data;
       return {
         ...state,
         loading: false,
-        current_user,
+        currentUser,
       }
     case JOIN_CREATE_LAB_FAILURE:
       console.log('JOIN_CREATE_LAB_FAILURE', action);
       return {
         ...state,
         loading: false,
-        error: action.error.message,
+        error: action.error.message || 'Invalid Pin Code',
       }
-
 
     default:
       return state
@@ -72,37 +71,21 @@ export default function users (state = initialState, action) {
 }
 
 // Thunk function:
-export const getUsers = () => {
-  console.log('fetchUserzz');
-  return dispatch => {
-    dispatch({ type: GET_USERS_PENDING });
-    return fetchUsers()
-      .then(data => dispatch({ type: GET_USERS_SUCCESS, data }))
-      .catch(error => dispatch({ type: GET_USERS_FAILURE, error }));
-  }
+export const getUsers = () => dispatch => {
+  dispatch({ type: GET_USERS_PENDING });
+  return fetchUsers()
+    .then(data => dispatch({ type: GET_USERS_SUCCESS, data }))
+    .catch(error => dispatch({ type: GET_USERS_FAILURE, error }));
 }
 
-export const joinCreateLab = ({endpoint, pin_code, username}) => {
-  console.log('joinCreateLab', endpoint, pin_code, username);
-  return dispatch => {
-    dispatch({ type: JOIN_CREATE_LAB_PENDING });
-    return joinOrCreateLab({endpoint, pin_code, username})
-      .then(data => dispatch({ type: JOIN_CREATE_LAB_SUCCESS, data }))
-      .catch(error => dispatch({ type: JOIN_CREATE_LAB_FAILURE, error }));
-  }
+export const joinCreateLab = ({endpoint, invite_code, name}) =>  dispatch => {
+  dispatch({ type: JOIN_CREATE_LAB_PENDING });
+  return joinOrCreateLab({endpoint, invite_code, name})
+    .then(data => dispatch({ type: JOIN_CREATE_LAB_SUCCESS, data }))
+    .catch(error => dispatch({ type: JOIN_CREATE_LAB_FAILURE, error }));
 }
-
-// const getUsersPending = () => {
-//   console.log('getUsersPending');
-//   return { type: GET_USERS_PENDING }
-// }
 
 // const getUsersSuccess = data => {
 //   console.log('getUsersSuccess', data);
 //   return { type: GET_USERS_SUCCESS, data }
-// }
-//
-// const getUsersFailure = error => {
-//   console.log('getUsersFailure', error);
-//   return { type: GET_USERS_FAILURE, error }
 // }

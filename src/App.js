@@ -45,7 +45,7 @@ class App extends Component {
     console.log('App.js CMD');
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    console.log('here props', this.props);
+    // console.log('here props', this.props);
 
     this.props.getUsers().then(r => console.log('r iz', r));
 
