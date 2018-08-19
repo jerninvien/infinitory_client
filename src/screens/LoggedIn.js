@@ -31,7 +31,7 @@ class LoggedIn extends Component {
     const { currentUser, getUsers, users } = this.props;
 
     console.log('uzerz are', users);
-    
+
     return (
       <View style={styles.container}>
         <View>
@@ -39,7 +39,7 @@ class LoggedIn extends Component {
           onPress={this._getUsers}
           style={styles.userText}
         >
-            LoggedIn {currentUser.name}
+            {currentUser.name}
           </Text>
         </View>
       </View>

@@ -11,7 +11,7 @@ const JOIN_CREATE_LAB_FAILURE = 'JOIN_CREATE_LAB_FAILURE';
 import { fetchUsers, joinOrCreateLab } from 'app/src/services/api';
 
 const initialState = {
-  apiKey: null,
+  // apiKey: null,
   error: false,
   loading: false,
   users: [],
@@ -21,12 +21,12 @@ const initialState = {
 export default function users (state = initialState, action) {
   switch (action.type) {
 
-    case SET_API_KEY:
-      console.log('SET_API_KEY', action);
-      return {
-        ...state,
-        apiKey: action.key
-      }
+    // case SET_API_KEY:
+    //   console.log('SET_API_KEY', action);
+    //   return {
+    //     ...state,
+    //     apiKey: action.key
+    //   }
 
 
     case GET_USERS_PENDING:
@@ -47,7 +47,7 @@ export default function users (state = initialState, action) {
         users,
       }
     }
-    
+
     case GET_USERS_FAILURE:
       console.log('GET_USERS_FAILURE', action);
       return {
@@ -85,13 +85,13 @@ export default function users (state = initialState, action) {
   }
 }
 
-export const setApiKeyInStore = key => {
-  console.log('setApiKeyInStore', key);
-  return {
-    type: SET_API_KEY,
-    key
-  }
-}
+// export const setApiKeyInStore = key => {
+//   console.log('setApiKeyInStore', key);
+//   return {
+//     type: SET_API_KEY,
+//     key
+//   }
+// }
 
 // Thunk function:
 export const getUsers = () => dispatch => {

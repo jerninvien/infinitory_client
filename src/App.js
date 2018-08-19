@@ -35,20 +35,6 @@ class App extends Component {
   componentDidMount = async () => {
     console.log('App.js CMD');
     AppState.addEventListener('change', this._handleAppStateChange);
-
-    // await AsyncStorage.setItem('apiKey');
-
-    const apiKey = await AsyncStorage.getItem('apiKey');
-    apiKey ? this.props.setApiKeyInStore(apiKey) : console.log('no apiKey');
-
-    // AsyncStorage.getItem('apiKey').then(apiKey => {
-    //   if (apiKey) {
-    //     console.log('componentDidMount apiKey found!');
-    //     // config.headers.authorization = `Bearer ${apiKey}`;
-    //     this.props.setApiKeyInStore(apiKey)
-    //   } else {
-    //     console.log('apiKey not found!');
-    //   }
   }
 
   componentWillUnmount() {

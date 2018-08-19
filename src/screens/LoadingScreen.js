@@ -19,8 +19,10 @@ class LoadingScreen extends Component {
   }
 
   _bootstrapAsync = async () => {
+    const apiKey = await AsyncStorage.getItem('apiKey');
+
     setTimeout(() => {
-      this.props.navigation.navigate(this.props.apiKey ? 'App' : 'Auth');
+      this.props.navigation.navigate(apiKey ? 'App' : 'Auth');
     }, 1000);
   };
 
