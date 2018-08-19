@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-
+import { setAxiosTokenHeader } from 'app/src/services/api';
 
 class LoadingScreen extends Component {
 
@@ -22,8 +22,13 @@ class LoadingScreen extends Component {
     const apiKey = await AsyncStorage.getItem('apiKey');
 
     setTimeout(() => {
-      this.props.navigation.navigate(apiKey ? 'App' : 'Auth');
-    }, 1000);
+      if (apiKey) {
+        setAxiosTokenHeader(apiKey);
+        this.props.navigation.navigate('App');
+      } else {
+        this.props.navigation.navigate('Auth');
+      }
+    }, 2000);
   };
 
   render() {
@@ -34,7 +39,7 @@ class LoadingScreen extends Component {
           style={{
             textAlign: 'center',
             fontSize: 40,
-            marginTop: 30
+            marginVertical: 30
           }}
         >
           INFINITORY

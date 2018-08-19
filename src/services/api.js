@@ -6,23 +6,10 @@ const api = axios.create({
   baseURL: 'http://0.0.0.0:3000/api/v1/',
 });
 
-const _retrieveData = async () => {
-  console.log('_retrieveData()');
-  try {
-    const value = await AsyncStorage.getItem('apiKey');
-    if (value !== null) {
-      // We have data!!
-      console.log('Setting Axios Auth header', value);
-      api.defaults.headers.common['authorization'] = value
-      // return value
-    }
-   } catch (error) {
-     // Error retrieving data
-     console.log('error retriginv apiKey');
-   }
+export const setAxiosTokenHeader = token => {
+  console.log('setAxiosTokenHeader()', token);
+  api.defaults.headers.common['authorization'] = token
 }
-
-_retrieveData()
 
 export const fetchUsers = () => {
   // return axios({

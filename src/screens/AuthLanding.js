@@ -68,7 +68,7 @@ class AuthLanding extends Component {
     const { currentUser } = this.props;
     console.log('currentUser iz', currentUser);
 
-    AsyncStorage.setItem('apiKey', currentUser.api_key)
+    AsyncStorage.multiSet(['ID', 'apiKey'], [currentUser.id, currentUser.api_key])
       .then(res => {
         console.log('res iz???', res);
         this.props.navigation.navigate('App');
