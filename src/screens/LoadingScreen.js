@@ -8,25 +8,22 @@ import {
   Text,
 } from 'react-native';
 
-export class LoadingScreen extends Component {
+import { connect } from 'react-redux';
+
+
+class LoadingScreen extends Component {
 
   componentDidMount = () => {
     console.log('AuthLoadingScreen.js CMD');
     this._bootstrapAsync();
   }
 
-  // Fetch the token from AsyncStorage then navigate accordingly
   _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('api_key');
-
-    console.log('userToken', userToken);
-
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    setTimeout(() => {
+      this.props.navigation.navigate(this.props.apiKey ? 'App' : 'Auth');
+    }, 1000);
   };
 
-  // Render any loading content that you like here
   render() {
     return (
       <View style={styles.container}>
@@ -45,6 +42,14 @@ export class LoadingScreen extends Component {
     );
   }
 }
+
+mapStateToProps = store => ({
+  apiKey: store.users.apiKey
+})
+
+export default connect(
+  mapStateToProps
+)(LoadingScreen);
 
 const styles = StyleSheet.create({
   container: {

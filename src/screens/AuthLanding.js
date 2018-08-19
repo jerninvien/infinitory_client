@@ -11,7 +11,6 @@ import {
 import { connect } from 'react-redux';
 import { joinCreateLab } from 'app/src/reduxModules/users';
 
-
 import Icon from 'react-native-vector-icons/Entypo';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
@@ -57,7 +56,7 @@ class AuthLanding extends Component {
       .then(res => {
         // Handle the Invite response here
         console.log('response is', res);
-        this._setupLogin(res);
+        this._setupLogin();
       }).catch(err => {
          // Handle Invite errors here
          console.log('error is 1', err);
@@ -69,17 +68,12 @@ class AuthLanding extends Component {
     const { currentUser } = this.props;
     console.log('currentUser iz', currentUser);
 
-    AsyncStorage.setItem('api_key', currentUser.api_key)
+    AsyncStorage.setItem('apiKey', currentUser.api_key)
       .then(res => {
         console.log('res iz???', res);
         this.props.navigation.navigate('App');
       }).catch(err => {
-
-      // this.setState({
-      //   loading: false,
-      //   message: '',
-      // });
-        console.log("deviceStorage.saveItem('api_key', currentUser.api_key) ERROR", err);
+        console.log("deviceStorage.saveItem('apiKey', currentUser.apiKey) ERROR", err);
       });
   }
 

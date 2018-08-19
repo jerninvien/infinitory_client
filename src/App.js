@@ -11,6 +11,7 @@
 import React, { Component, Fragment } from 'react';
 import {
   AppState,
+  AsyncStorage,
   Button,
   StatusBar,
   StyleSheet,
@@ -19,81 +20,41 @@ import {
   View,
 } from 'react-native';
 
-import { connect } from 'react-redux';
-import { getUsers } from 'app/src/reduxModules/users';
-
 import { LoggedIn, Registration } from 'app/src/screens/';
 import { Loading, UserList } from 'app/src/components/common/';
+
+import { setApiKeyInStore } from 'app/src/reduxModules/users';
+import { connect } from 'react-redux';
+
+
 import Routes from 'app/src/Routes';
 
-import { deviceStorage } from 'app/src/services/';
-
 class App extends Component {
-  state = {
-    // showRegisterScreen: true,
-    appState: AppState.currentState,
-    currentUser: null,
-    devices: [],
-    invite_codes: [],
-    lab: {},
-    loading: true,
-    message: 'Checking account status...',
-    // users: [],
-  }
+  state = { appState: AppState.currentState }
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     console.log('App.js CMD');
     AppState.addEventListener('change', this._handleAppStateChange);
 
-    // console.log('here props', this.props);
+    // await AsyncStorage.setItem('apiKey');
 
-    this.props.getUsers().then(r => console.log('r iz', r));
+    const apiKey = await AsyncStorage.getItem('apiKey');
+    apiKey ? this.props.setApiKeyInStore(apiKey) : console.log('no apiKey');
 
-    // deviceStorage.loadItem('api_key')
-    //   .then(res => {
-    //     if (res !== null) {
-    //       this._makeInitialLabRequest(res);
-    //     } else {
-    //       this.setState({
-    //         loading: false,
-    //         message: 'Create account or login',
-    //       });
-    //     }
-    // }).catch(err => {
-    //   console.log("deviceStorage.loadItem('api_key') err", err);
-    // });
+    // AsyncStorage.getItem('apiKey').then(apiKey => {
+    //   if (apiKey) {
+    //     console.log('componentDidMount apiKey found!');
+    //     // config.headers.authorization = `Bearer ${apiKey}`;
+    //     this.props.setApiKeyInStore(apiKey)
+    //   } else {
+    //     console.log('apiKey not found!');
+    //   }
   }
 
   componentWillUnmount() {
     console.log('App.js componentWillUnmount');
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
-
-  // _makeInitialLabRequest = res => {
-  //   console.log('_makeInitialLabRequest', res);
-  //   const headers = { 'X-USER-TOKEN': res };
-  //
-  //   axios({
-  //     method: 'GET',
-  //     url: 'http://localhost:3000/api/v1/lab',
-  //     headers,
-  //   }).then(res => {
-  //     console.log('success here', res);
-  //
-  //     this.setState({
-  //       ...res.data,
-  //       // showRegisterScreen: false,
-  //       loading: false,
-  //       message: '',
-  //     });
-  //   }).catch(err => {
-  //     this.setState({
-  //       // showRegisterScreen: true,
-  //       loading: false,
-  //       message: 'Create a lab or join one',
-  //     });
-  //   });
-  // }
 
   _handleAppStateChange = nextAppState => {
     // console.log('_handleAppStateChange nextAppState', nextAppState);
@@ -116,6 +77,16 @@ class App extends Component {
   }
 }
 
+mapStateToProps = store => ({})
+
+mapDispatchToProps = {
+  setApiKeyInStore
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
 
 const styles = StyleSheet.create({
   container: {
@@ -126,18 +97,3 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-
-mapStateToProps = store => ({
-    users: store.users.users,
-    loading: store.users.loading,
-    error: store.users.error,
-  });
-
-mapDispatchToProps = {
-  getUsers
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);

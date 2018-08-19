@@ -1,3 +1,5 @@
+const SET_API_KEY = 'SET_API_KEY';
+
 const GET_USERS_PENDING = 'GET_USERS_PENDING';
 const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 const GET_USERS_FAILURE = 'GET_USERS_FAILURE';
@@ -9,6 +11,7 @@ const JOIN_CREATE_LAB_FAILURE = 'JOIN_CREATE_LAB_FAILURE';
 import { fetchUsers, joinOrCreateLab } from 'app/src/services/api';
 
 const initialState = {
+  apiKey: null,
   error: false,
   loading: false,
   users: [],
@@ -17,6 +20,15 @@ const initialState = {
 
 export default function users (state = initialState, action) {
   switch (action.type) {
+
+    case SET_API_KEY:
+      console.log('SET_API_KEY', action);
+      return {
+        ...state,
+        apiKey: action.key
+      }
+
+
     case GET_USERS_PENDING:
       console.log('GET_USERS_PENDING', action);
       return {
@@ -25,14 +37,17 @@ export default function users (state = initialState, action) {
         loading: true,
         error: null,
       }
-    case GET_USERS_SUCCESS:
+    case GET_USERS_SUCCESS: {
       console.log('GET_USERS_SUCCESS', action);
-      const users = action.data.data.results;
+      const { currentUser, users } = action.data.data;
       return {
         ...state,
+        currentUser,
         loading: false,
         users,
       }
+    }
+    
     case GET_USERS_FAILURE:
       console.log('GET_USERS_FAILURE', action);
       return {
@@ -67,6 +82,14 @@ export default function users (state = initialState, action) {
 
     default:
       return state
+  }
+}
+
+export const setApiKeyInStore = key => {
+  console.log('setApiKeyInStore', key);
+  return {
+    type: SET_API_KEY,
+    key
   }
 }
 

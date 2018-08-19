@@ -8,32 +8,38 @@ import {
   View,
 } from 'react-native';
 
-export class LoggedIn extends Component {
+import { connect } from 'react-redux';
+import { getUsers } from 'app/src/reduxModules/users';
+
+class LoggedIn extends Component {
   static navigationOptions = {
     drawerLabel: 'Home',
   }
 
-  state = {
-    viewMode: 'Members'
-  }
-
   componentDidMount = () => {
     console.log('LoggedIn.js CMD', this.props);
+    this._getUsers();
+  }
+
+  _getUsers = () => {
+    this.props.getUsers()
+      .then(r => console.log('getUesrs success', r))
+      .catch(e => console.log('getUsers error', r));
   }
 
   render() {
-    // const { currentUser } = this.props;
-    const { viewMode } = this.state;
-    // console.log('currentUser is', currentUser);
+    const { currentUser, getUsers, users } = this.props;
 
+    console.log('uzerz are', users);
+    
     return (
       <View style={styles.container}>
         <View>
         <Text
-          onPress={() => console.log('this was presesz')}
+          onPress={this._getUsers}
           style={styles.userText}
         >
-            LoggedIn
+            LoggedIn {currentUser.name}
           </Text>
         </View>
       </View>
@@ -41,49 +47,29 @@ export class LoggedIn extends Component {
   }
 }
 
+mapStateToProps = store => ({
+  currentUser: store.users.currentUser,
+  loading: store.users.loading,
+  error: store.users.error,
+  users: store.users.users
+})
+
+mapDispatchToProps = {
+  getUsers
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoggedIn);
+
 const styles = StyleSheet.create({
   container: {
-    // borderColor: 'yellow',
-    // borderWidth: 1,
     flex: 1,
     justifyContent: 'center',
   },
-  // loggedInText: {
-  //   fontSize: 30,
-  //   textAlign: 'center',
-  // },
-  // navBar: {
-  //   bottom: 0,
-  //   display: 'flex',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   position: 'absolute',
-  // },
   userText: {
     fontSize: 24,
     textAlign: 'center',
   },
-  // userText2: {
-  //   borderColor: 'yellow',
-  //   borderWidth: 1,
-  //   flex: 1,
-  //   fontSize: 24,
-  //   textAlign: 'center',
-  // }
 });
-
-// <View style={styles.navBar}>
-//   <Text
-//     onPress={
-//       () => console.log('Members clicked')
-//     }
-//     style={styles.userText2}>
-//     LoggedIn Screem
-//   </Text>
-//   <Text onPress={
-//       () => console.log('Devices clicked')
-//     }
-//     style={styles.userText2}>
-//     Devices
-//   </Text>
-// </View>

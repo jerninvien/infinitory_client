@@ -14,7 +14,7 @@ import {
   // RegistrationComplete,
 } from 'app/src/screens';
 
-console.log('AuthLanding', AuthLanding);
+// console.log('AuthLanding', AuthLanding);
 
 const AppStack = createBottomTabNavigator({
   Home: LoggedIn,
