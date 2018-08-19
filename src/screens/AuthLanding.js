@@ -86,6 +86,8 @@ class AuthLanding extends Component {
       'Join an existing lab' :
       'Create a new lab';
 
+    console.log('error iz', error);
+
     // console.log('Registration Render state:', this.state);
     // const zests = error ? 'ENTER A USERNAME' : ''
 
@@ -157,7 +159,7 @@ class AuthLanding extends Component {
 
           {!loading ?
             <TouchableButton
-              disabled={(error !== '') && (invite_code.length !== 4)}
+              // disabled={!error}
               onPress={this._sendJoinOrCreateRequest}
               title={submitText}
             >
