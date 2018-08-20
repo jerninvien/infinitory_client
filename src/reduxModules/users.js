@@ -47,10 +47,9 @@ export default function users (state = initialState, action) {
       }
     case GET_USERS_SUCCESS: {
       console.log('GET_USERS_SUCCESS', action);
-      const { currentUser, users } = action.data.data;
+      const { users } = action.data.data;
       return {
         ...state,
-        currentUser,
         loading: false,
         users,
       }

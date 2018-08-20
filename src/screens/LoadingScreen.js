@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
+import { setCurrentUserInStore } from 'app/src/reduxModules/users';
 import { setAxiosTokenHeader } from 'app/src/services/api';
 
 class LoadingScreen extends Component {
@@ -23,7 +24,9 @@ class LoadingScreen extends Component {
 
     if (currentUser && (Object.keys(currentUser).length !== 0)) {
       console.log('do this?', currentUser);
-      setAxiosTokenHeader(JSON.parse(currentUser).api_key);
+      const user = JSON.parse(currentUser);
+      this.props.setCurrentUserInStore(user);
+      setAxiosTokenHeader(user.api_key);
       setTimeout(() => {this.props.navigation.navigate('App')}, 2000);
     } else {
       console.log('_bootstrapAsync missing currentUser');
@@ -55,8 +58,13 @@ mapStateToProps = store => ({
   apiKey: store.users.apiKey
 })
 
+mapDispatchToProps = {
+  setCurrentUserInStore
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(LoadingScreen);
 
 const styles = StyleSheet.create({

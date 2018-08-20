@@ -30,6 +30,7 @@ class LoggedIn extends Component {
   render() {
     const { currentUser, getUsers, users } = this.props;
 
+    console.log('currentUser are', currentUser);
     console.log('uzerz are', users);
 
     return (

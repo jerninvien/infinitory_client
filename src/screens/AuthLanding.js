@@ -73,7 +73,7 @@ class AuthLanding extends Component {
         setAxiosTokenHeader(currentUser.api_key);
         this.props.navigation.navigate('App');
       }).catch(err => {
-        console.log("deviceStorage.saveItem('apiKey', currentUser.apiKey) ERROR", err);
+        console.log("_setupLogin ERROR", err);
       });
   }
 
@@ -86,7 +86,7 @@ class AuthLanding extends Component {
       'Join an existing lab' :
       'Create a new lab';
 
-    console.log('error iz', error);
+    // console.log('error iz', error);
 
     // console.log('Registration Render state:', this.state);
     // const zests = error ? 'ENTER A USERNAME' : ''
