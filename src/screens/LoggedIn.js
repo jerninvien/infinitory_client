@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { getUsers } from 'app/src/reduxModules/users';
+import { getLab } from 'app/src/reduxModules/users';
 
 class LoggedIn extends Component {
   static navigationOptions = {
@@ -17,27 +17,29 @@ class LoggedIn extends Component {
   }
 
   componentDidMount = () => {
-    console.log('LoggedIn.js CMD', this.props);
-    this._getUsers();
-  }
-
-  _getUsers = () => {
-    this.props.getUsers()
-      .then(r => console.log('getUesrs success', r))
-      .catch(e => console.log('getUsers error', r));
+    this.props.getLab();
   }
 
   render() {
-    const { currentUser, getUsers, users } = this.props;
+    const {
+      currentUser,
+      devices,
+      invite_codes,
+      lab,
+      users,
+    } = this.props;
 
-    console.log('currentUser are', currentUser);
-    console.log('uzerz are', users);
+    // console.log('currentUser are', currentUser);
+    // console.log('devices are', devices);
+    console.log('invite_codes are', invite_codes);
+    console.log('lab are', lab);
+    console.log('users are', users);
 
     return (
       <View style={styles.container}>
         <View>
         <Text
-          onPress={this._getUsers}
+          onPress={this._getLab}
           style={styles.userText}
         >
             {currentUser.name}
@@ -50,13 +52,17 @@ class LoggedIn extends Component {
 
 mapStateToProps = store => ({
   currentUser: store.users.currentUser,
-  loading: store.users.loading,
+  device: store.users.device,
   error: store.users.error,
-  users: store.users.users
+  invite_codes: store.users.invite_codes,
+  lab: store.users.lab,
+  loading: store.users.loading,
+  users: store.users.users,
+
 })
 
 mapDispatchToProps = {
-  getUsers
+  getLab
 }
 
 export default connect(

@@ -6,19 +6,12 @@ const api = axios.create({
   baseURL: 'http://0.0.0.0:3000/api/v1/',
 });
 
-export const setAxiosTokenHeader = token => {
-  console.log('setAxiosTokenHeader()', token);
+export const setAxiosTokenHeader = token =>
   api.defaults.headers.common['authorization'] = token
-}
 
-export const fetchUsers = () => {
-  // return axios({
-  //   method: 'GET',
-  //   url: 'https://randomuser.me/api/?results=5&nat=us,dk,fr,gb'
-  // });
+export const fetchUsers = () =>  api({ method: 'GET', url: 'users' })
 
-  return api({ method: 'GET', url: 'users' })
-}
+export const fetchLab = () => api({ method: 'GET', url: 'lab' })
 
 export const joinOrCreateLab = ({endpoint, invite_code, name}) => {
   console.log('joinOrCreateLab', endpoint, invite_code, name);

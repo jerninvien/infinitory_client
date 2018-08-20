@@ -63,18 +63,13 @@ class AuthLanding extends Component {
 
   _setupLogin = () => {
     const { currentUser } = this.props;
-    // console.log('_setupLogin res iz', res);
-    console.log('_setupLogin currentUser iz A', currentUser);
-    console.log('_setupLogin currentUser iz B', JSON.stringify(currentUser));
 
     AsyncStorage.setItem('currentUser', JSON.stringify(currentUser))
       .then(() => {
         console.log('setItem worked??', currentUser);
         setAxiosTokenHeader(currentUser.api_key);
         this.props.navigation.navigate('App');
-      }).catch(err => {
-        console.log("_setupLogin ERROR", err);
-      });
+      }).catch(err => console.log("_setupLogin ERROR", err));
   }
 
   render() {
