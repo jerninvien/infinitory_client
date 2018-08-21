@@ -19,11 +19,12 @@ import {
 } from 'app/src/services/api';
 
 const initialState = {
-  currentUser: {},
+  currentUser: null,
   devices: [],
   error: false,
   invite_codes: [],
   loading: false,
+  statusCode: null,
   users: [],
 }
 
@@ -71,6 +72,7 @@ export default function users (state = initialState, action) {
         users: [],
         loading: true,
         error: null,
+        statusCode: null
       }
     case GET_LAB_SUCCESS: {
       console.log('GET_LAB_SUCCESS', action);
@@ -86,11 +88,14 @@ export default function users (state = initialState, action) {
       }
     }
     case GET_LAB_FAILURE:
-      console.log('GET_LAB_FAILURE', action);
+      console.log('GET_LAB_FAILURE', action.error.response);
+
+      const { status } = action.error.response;
       return {
         ...state,
         loading: false,
-        error: action.error.message,
+        error: action.error,
+        statusCode: status || null
       }
 
     case JOIN_CREATE_LAB_PENDING:
@@ -99,18 +104,25 @@ export default function users (state = initialState, action) {
         ...state,
         currentUser: {},
         loading: true,
-        error: null,
+        error: status || action.error,
       }
     case JOIN_CREATE_LAB_SUCCESS:
       console.log('JOIN_CREATE_LAB_SUCCESS', action);
-      const { currentUser } = action.data.data;
+      // const { currentUser } = action.data.data;
+      const { currentUser, devices, invite_codes, lab, users } = action.data.data;
+
       return {
         ...state,
-        loading: false,
         currentUser,
+        error: false,
+        loading: false,
+        devices,
+        invite_codes,
+        lab,
+        users,
       }
     case JOIN_CREATE_LAB_FAILURE:
-      console.log('JOIN_CREATE_LAB_FAILURE', action);
+      console.log('JOIN_CREATE_LAB_FAILURE', action.error);
       return {
         ...state,
         loading: false,
@@ -122,8 +134,9 @@ export default function users (state = initialState, action) {
   }
 }
 
-export const setCurrentUserInStore = currentUser => {
-  return { type: SET_CURRENT_USER, currentUser }
+export const setCurrentUserInStore = currentUser => dispatch => {
+  dispatch({type: SET_CURRENT_USER, currentUser});
+  return Promise.resolve();
 }
 
 // Thunk function:

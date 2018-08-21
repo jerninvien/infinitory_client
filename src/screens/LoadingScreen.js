@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { setCurrentUserInStore } from 'app/src/reduxModules/users';
+import { getLab, setCurrentUserInStore } from 'app/src/reduxModules/users';
 import { setAxiosTokenHeader } from 'app/src/services/api';
 
 class LoadingScreen extends Component {
@@ -23,14 +23,13 @@ class LoadingScreen extends Component {
     const currentUser = await AsyncStorage.getItem('currentUser');
 
     if (currentUser && (Object.keys(currentUser).length !== 0)) {
-      console.log('do this?', currentUser);
       const user = JSON.parse(currentUser);
-      this.props.setCurrentUserInStore(user);
-      setAxiosTokenHeader(user.api_key);
-      setTimeout(() => {this.props.navigation.navigate('App')}, 2000);
+      this.props.setCurrentUserInStore(user)
+        .then(() => setAxiosTokenHeader(user.api_key))
+        .then(() => this.props.navigation.navigate('App'))
+        .catch(e => console.log('What is this error', r));
     } else {
       console.log('_bootstrapAsync missing currentUser');
-      await AsyncStorage.clear();
       this.props.navigation.navigate('Auth');
     }
   };
@@ -59,6 +58,7 @@ mapStateToProps = store => ({
 })
 
 mapDispatchToProps = {
+  getLab,
   setCurrentUserInStore
 }
 

@@ -17,8 +17,8 @@ import {
 // console.log('AuthLanding', AuthLanding);
 
 const AppStack = createBottomTabNavigator({
-  Home: LoggedIn,
-  Home2: LoggedIn2,
+  Devices: LoggedIn,
+  Members: LoggedIn2,
 });
 
 // const RegistrationStack = createSwitchNavigator(

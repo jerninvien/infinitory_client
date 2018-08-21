@@ -12,12 +12,18 @@ import { connect } from 'react-redux';
 import { getLab } from 'app/src/reduxModules/users';
 
 class LoggedIn extends Component {
-  static navigationOptions = {
-    drawerLabel: 'Home',
-  }
-
   componentDidMount = () => {
     this.props.getLab();
+  }
+
+  componentWillReceiveProps = async nextProps => {
+    console.log('LoggedIn1 componentWillReceiveProps', nextProps);
+
+    if ((this.props.statusCode === null) &&
+        (nextProps.statusCode === 403)) {
+      console.log('LoggedIn 403');
+      this.props.navigation.navigate('Auth');
+    }
   }
 
   render() {
@@ -29,17 +35,15 @@ class LoggedIn extends Component {
       users,
     } = this.props;
 
-    // console.log('currentUser are', currentUser);
-    // console.log('devices are', devices);
-    console.log('invite_codes are', invite_codes);
-    console.log('lab are', lab);
-    console.log('users are', users);
+    // console.log('invite_codes are', invite_codes);
+    // console.log('lab are', lab);
+    // console.log('users are', users);
 
     return (
       <View style={styles.container}>
         <View>
         <Text
-          onPress={this._getLab}
+          onPress={this.props.getLab}
           style={styles.userText}
         >
             {currentUser.name}
@@ -52,8 +56,8 @@ class LoggedIn extends Component {
 
 mapStateToProps = store => ({
   currentUser: store.users.currentUser,
-  device: store.users.device,
-  error: store.users.error,
+  devices: store.users.devices,
+  statusCode: store.users.statusCode,
   invite_codes: store.users.invite_codes,
   lab: store.users.lab,
   loading: store.users.loading,
@@ -62,7 +66,7 @@ mapStateToProps = store => ({
 })
 
 mapDispatchToProps = {
-  getLab
+  getLab,
 }
 
 export default connect(

@@ -9,25 +9,21 @@ import {
   View,
 } from 'react-native';
 
-export class LoggedIn2 extends Component {
-  static navigationOptions = {
-    drawerLabel: 'Home2',
+import { connect } from 'react-redux';
+import { getLab } from 'app/src/reduxModules/users';
+
+class LoggedIn2 extends Component {
+  componentDidMount = () => console.log('LoggedIn2.js CMD')
+
+  componentWillReceiveProps = nextProps => {
+    console.log('LoggedIn2 componentWillReceiveProps', nextProps);
   }
 
-  componentDidMount = () => console.log('LoggedIn.js CMD')
-
   _logOut = () => {
-    console.log('_logOut');
-    AsyncStorage.clear()
-      .then(() => this.props.navigation.navigate('Auth'));
-
-    console.log('down here now');
+    this.props.navigation.navigate('Auth');
   }
 
   render() {
-    // const { currentUser } = this.props;
-    // console.log('currentUser is', currentUser);
-
     return (
       <View style={styles.container}>
         <View>
@@ -43,49 +39,27 @@ export class LoggedIn2 extends Component {
   }
 }
 
+mapStateToProps = store => ({
+  currentUser: store.users.currentUser,
+  devices: store.users.devices,
+  statusCode: store.users.statusCode,
+  invite_codes: store.users.invite_codes,
+  lab: store.users.lab,
+  loading: store.users.loading,
+  users: store.users.users,
+
+})
+export default connect(
+  mapStateToProps
+)(LoggedIn2);
+
 const styles = StyleSheet.create({
   container: {
-    // borderColor: 'yellow',
-    // borderWidth: 1,
     flex: 1,
     justifyContent: 'center',
   },
-  // loggedInText: {
-  //   fontSize: 30,
-  //   textAlign: 'center',
-  // },
-  // navBar: {
-  //   bottom: 0,
-  //   display: 'flex',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   position: 'absolute',
-  // },
   userText: {
     fontSize: 24,
     textAlign: 'center',
   },
-  // userText2: {
-  //   borderColor: 'yellow',
-  //   borderWidth: 1,
-  //   flex: 1,
-  //   fontSize: 24,
-  //   textAlign: 'center',
-  // }
 });
-
-// <View style={styles.navBar}>
-//   <Text
-//     onPress={
-//       () => console.log('Members clicked')
-//     }
-//     style={styles.userText2}>
-//     LoggedIn Screem
-//   </Text>
-//   <Text onPress={
-//       () => console.log('Devices clicked')
-//     }
-//     style={styles.userText2}>
-//     Devices
-//   </Text>
-// </View>

@@ -25,15 +25,13 @@ import { Loading, UserList } from 'app/src/components/common/';
 
 import { setApiKeyInStore } from 'app/src/reduxModules/users';
 import { connect } from 'react-redux';
-
-
 import Routes from 'app/src/Routes';
 
 class App extends Component {
   state = { appState: AppState.currentState }
 
-  componentDidMount = async () => {
-    console.log('App.js CMD');
+  componentDidMount = () => {
+    console.log('App.js CMD', this.props);
     AppState.addEventListener('change', this._handleAppStateChange);
   }
 

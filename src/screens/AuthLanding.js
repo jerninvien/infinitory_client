@@ -9,7 +9,11 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux';
-import { joinCreateLab } from 'app/src/reduxModules/users';
+import {
+  getLab,
+  joinCreateLab,
+  setCurrentUserInStore
+} from 'app/src/reduxModules/users';
 import { setAxiosTokenHeader } from 'app/src/services/api';
 
 import Icon from 'react-native-vector-icons/Entypo';
@@ -29,8 +33,13 @@ class AuthLanding extends Component {
     name: '',
   }
 
-  componentDidMount = () => {
-    console.log('AuthLanding.js CMD', this.props);
+  componentDidMount = async () => {
+    if (this.props.currentUser !== null) {
+      console.log('AuthLanding.js CMD before', this.props);
+      await AsyncStorage.clear();
+      console.log('AuthLanding.js CMD after', this.props);
+      this.props.setCurrentUserInStore(null);
+    }
   }
 
   // _goToHere = path => () => {
@@ -55,10 +64,7 @@ class AuthLanding extends Component {
     // NOTE Post to HTTPS in production
     this.props.joinCreateLab({endpoint, invite_code, name})
       .then(() => this._setupLogin())
-      .catch(err => {
-         console.log('joinCreateLab error:', err);
-         return err;
-      });
+      .catch(err => console.log('joinCreateLab error:', err));
   }
 
   _setupLogin = () => {
@@ -67,9 +73,11 @@ class AuthLanding extends Component {
     AsyncStorage.setItem('currentUser', JSON.stringify(currentUser))
       .then(() => {
         console.log('setItem worked??', currentUser);
-        setAxiosTokenHeader(currentUser.api_key);
-        this.props.navigation.navigate('App');
-      }).catch(err => console.log("_setupLogin ERROR", err));
+        setAxiosTokenHeader(currentUser.api_key).then(token => {
+          console.log('setAxiosTokenHeader worked??', token);
+          this.props.navigation.navigate('App')
+        }).catch(err => console.log("_setupLogin ERROR 2", err));
+      }).catch(err => console.log("_setupLogin ERROR 1", err));
   }
 
   render() {
@@ -176,7 +184,9 @@ mapStateToProps = store => ({
 });
 
 mapDispatchToProps = {
-  joinCreateLab
+  joinCreateLab,
+  getLab,
+  setCurrentUserInStore
 }
 
 export default connect(
