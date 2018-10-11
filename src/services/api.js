@@ -20,7 +20,7 @@ const api = axios.create({
 //     }
 // });
 
-export const setAxiosTokenHeader =  token => {
+export const setAxiosTokenHeader = token => {
   console.log('setAxiosTokenHeader', token);
   api.defaults.headers.common['authorization'] = token;
   return Promise.resolve(token);

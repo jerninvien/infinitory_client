@@ -13,10 +13,15 @@ import { getLab } from 'app/src/reduxModules/users';
 
 class LoggedIn extends Component {
   componentDidMount = () => {
+    console.log('LoggedIn CDM');
     this.props.getLab();
   }
 
-  componentWillReceiveProps = async nextProps => {
+  componentWillUnmount = () => {
+    console.log('LoggedIn, CWU');
+  }
+
+  componentWillReceiveProps = nextProps => {
     console.log('LoggedIn1 componentWillReceiveProps', nextProps);
 
     if ((this.props.statusCode === null) &&

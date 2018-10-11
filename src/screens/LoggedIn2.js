@@ -13,7 +13,13 @@ import { connect } from 'react-redux';
 import { getLab } from 'app/src/reduxModules/users';
 
 class LoggedIn2 extends Component {
-  componentDidMount = () => console.log('LoggedIn2.js CMD')
+  componentDidMount = () => {
+    console.log('LoggedIn2.js CMD');
+  }
+
+  componentWillUnmount = () => {
+    console.log('LoggedIn2, CWU');
+  }
 
   componentWillReceiveProps = nextProps => {
     console.log('LoggedIn2 componentWillReceiveProps', nextProps);

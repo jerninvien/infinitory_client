@@ -33,14 +33,14 @@ class AuthLanding extends Component {
     name: '',
   }
 
-  componentDidMount = async () => {
-    if (this.props.currentUser !== null) {
-      console.log('AuthLanding.js CMD before', this.props);
-      await AsyncStorage.clear();
-      console.log('AuthLanding.js CMD after', this.props);
-      this.props.setCurrentUserInStore(null);
-    }
-  }
+  // componentDidMount = async () => {
+  //   if (this.props.currentUser !== null) {
+  //     console.log('AuthLanding.js CMD before', this.props);
+  //     await AsyncStorage.clear();
+  //     console.log('AuthLanding.js CMD after', this.props);
+  //     this.props.setCurrentUserInStore(null);
+  //   }
+  // }
 
   // _goToHere = path => () => {
   //   this.props.navigation.navigate(path);
@@ -115,15 +115,14 @@ class AuthLanding extends Component {
             color: '#fff',
             fontSize: 30,
             fontWeight: "600"
-          }}>Welcome to Infinitory</Text>
+          }}>Infinitory</Text>
 
           <Text style={{
             color: '#fff',
             fontSize: 18,
             textAlign: 'center'
-          }}>Organise your lab</Text>
+          }}>SIMPLIFY YOUR LAB</Text>
         </View>
-
 
         <View style={styles.form}>
           <Input
