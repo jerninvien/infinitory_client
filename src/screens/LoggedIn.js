@@ -24,8 +24,7 @@ class LoggedIn extends Component {
   componentWillReceiveProps = nextProps => {
     console.log('LoggedIn1 componentWillReceiveProps', nextProps);
 
-    if ((this.props.statusCode === null) &&
-        (nextProps.statusCode === 403)) {
+    if ((this.props.statusCode === null) && (nextProps.statusCode === 403)) {
       console.log('LoggedIn 403');
       this.props.navigation.navigate('Auth');
     }

@@ -27,7 +27,7 @@ class LoadingScreen extends Component {
       this.props.setCurrentUserInStore(user)
         .then(() => setAxiosTokenHeader(user.api_key))
         .then(() => this.props.navigation.navigate('App'))
-        .catch(e => console.log('What is this error', r));
+        .catch(e => console.log('What is this error', e));
     } else {
       console.log('_bootstrapAsync missing currentUser');
       this.props.navigation.navigate('Auth');
